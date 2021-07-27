@@ -16,17 +16,17 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/stash"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="@string/textview" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editText1"
+                android:id="@+id/input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -41,32 +41,36 @@
                 android:layout_height="match_parent">
 
                 <Button
-                    android:id="@+id/button23"
+                    android:id="@+id/b1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="onTapB1"
-                    android:text="1" />
+                    android:text="@string/_1"
+                    style="?android:attr/buttonBarButtonStyle" />
 
                 <Button
-                    android:id="@+id/button25"
+                    android:id="@+id/b2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="onTapB2"
-                    android:text="2" />
+                    android:text="@string/_2"
+                    style="?android:attr/buttonBarButtonStyle" />
 
                 <Button
-                    android:id="@+id/button26"
+                    android:id="@+id/b3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="onTapB3"
-                    android:text="3" />
+                    android:text="@string/_3"
+                    style="?android:attr/buttonBarButtonStyle" />
 
                 <Button
-                    android:id="@+id/button36"
+                    android:id="@+id/bPlus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="onTapBPlus"
-                    android:text="+" />
+                    android:text="@string/plus"
+                    style="?android:attr/buttonBarButtonStyle" />
             </TableRow>
 
             <TableRow
@@ -74,32 +78,36 @@
                 android:layout_height="match_parent">
 
                 <Button
-                    android:id="@+id/button28"
+                    android:id="@+id/b4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="onTapB4"
-                    android:text="4" />
+                    android:text="@string/_4"
+                    style="?android:attr/buttonBarButtonStyle" />
 
                 <Button
-                    android:id="@+id/button27"
+                    android:id="@+id/b5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="onTapB5"
-                    android:text="5" />
+                    android:text="@string/_5"
+                    style="?android:attr/buttonBarButtonStyle" />
 
                 <Button
-                    android:id="@+id/button24"
+                    android:id="@+id/b6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="onTapB6"
-                    android:text="6" />
+                    android:text="@string/_6"
+                    style="?android:attr/buttonBarButtonStyle" />
 
                 <Button
-                    android:id="@+id/button37"
+                    android:id="@+id/bMinus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="onTapBMinus"
-                    android:text="-" />
+                    android:text="@string/minus"
+                    style="?android:attr/buttonBarButtonStyle" />
             </TableRow>
 
             <TableRow
@@ -107,32 +115,36 @@
                 android:layout_height="match_parent">
 
                 <Button
-                    android:id="@+id/button31"
+                    android:id="@+id/b7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="onTapB7"
-                    android:text="7" />
+                    android:text="@string/_7"
+                    style="?android:attr/buttonBarButtonStyle" />
 
                 <Button
-                    android:id="@+id/button35"
+                    android:id="@+id/b8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="onTapB8"
-                    android:text="8" />
+                    android:text="@string/_8"
+                    style="?android:attr/buttonBarButtonStyle" />
 
                 <Button
-                    android:id="@+id/button29"
+                    android:id="@+id/b9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="onTapB9"
-                    android:text="9" />
+                    android:text="@string/_9"
+                    style="?android:attr/buttonBarButtonStyle" />
 
                 <Button
-                    android:id="@+id/button30"
+                    android:id="@+id/bDivide"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="onTapBDivide"
-                    android:text="/" />
+                    android:text="@string/divide"
+                    style="?android:attr/buttonBarButtonStyle" />
             </TableRow>
 
             <TableRow
@@ -140,32 +152,36 @@
                 android:layout_height="match_parent">
 
                 <Button
-                    android:id="@+id/button34"
+                    android:id="@+id/bEqual"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="onTapBEqual"
-                    android:text="=" />
+                    android:text="@string/equal"
+                    style="?android:attr/buttonBarButtonStyle" />
 
                 <Button
-                    android:id="@+id/button32"
+                    android:id="@+id/b0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="onTapB0"
-                    android:text="0" />
+                    android:text="@string/_0"
+                    style="?android:attr/buttonBarButtonStyle" />
 
                 <Button
-                    android:id="@+id/button33"
+                    android:id="@+id/bClear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="onTapBClear"
-                    android:text="Clear" />
+                    android:text="@string/clear"
+                    style="?android:attr/buttonBarButtonStyle" />
 
                 <Button
-                    android:id="@+id/button38"
+                    android:id="@+id/bMultiply"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="onTapBMultiply"
-                    android:text="*" />
+                    android:text="@string/multiply"
+                    style="?android:attr/buttonBarButtonStyle" />
             </TableRow>
         </TableLayout>
     </LinearLayout>
