@@ -64,32 +64,33 @@ class MainActivity : AppCompatActivity() {
                 Operation.PLUS -> {
                     val res=input.text.toString().toDouble()+stash.text.toString().toDouble()
                     input.setText(res.toString())
-                    stash.setText("")
                 }
                 Operation.MINUS -> {
                     val res=stash.text.toString().toDouble()-input.text.toString().toDouble()
                     input.setText(res.toString())
-                    stash.setText("")
                 }
                 Operation.MULTIPLY -> {
                     val res=input.text.toString().toDouble()*stash.text.toString().toDouble()
                     input.setText(res.toString())
-                    stash.setText("")
                 }
                 Operation.DIVIDE -> {
                     val divisor = input.text.toString().toDouble()
-                    val res=stash.text.toString().toDouble()/divisor
-                    if(divisor!=0.0) input.setText(res.toString())
+
+                    if(divisor!=0.0) {
+                        val res=stash.text.toString().toDouble()/divisor
+                        input.setText(res.toString())
+                    }
                     else {
                         AlertDialog
                             .Builder(this@MainActivity)
-                            .setTitle("Err")
-                            .setMessage("Division by zero is not allowed!")
+                            .setTitle(getString(R.string.error_title))
+                            .setMessage(getString(R.string.error_message))
                             .show()
                     }
-                    stash.setText("")
                 }
             }
+
+            stash.setText("")
             operation=Operation.MAIN_STATUS
         }
     }
@@ -123,7 +124,7 @@ class MainActivity : AppCompatActivity() {
     }
     fun onTapBMultiply(view: View){
         with(binding) {
-            if (input.text.toString() ==  "" ) return
+            if (input.text.toString() ==  "") return
             if (operation==Operation.MAIN_STATUS) {
                 stash.setText(input.getText().toString())
                 operation=Operation.MULTIPLY
