@@ -59,44 +59,45 @@ class MainActivity : AppCompatActivity() {
     }
     fun onTapBEqual(view: View){
         with(binding){
-            if (input.text.toString().isNullOrEmpty() && stash.text.toString().isNullOrEmpty() ) return
-            when(operation){
-                Operation.PLUS -> {
-                    val res=input.text.toString().toDouble()+stash.text.toString().toDouble()
-                    input.setText(res.toString())
-                }
-                Operation.MINUS -> {
-                    val res=stash.text.toString().toDouble()-input.text.toString().toDouble()
-                    input.setText(res.toString())
-                }
-                Operation.MULTIPLY -> {
-                    val res=input.text.toString().toDouble()*stash.text.toString().toDouble()
-                    input.setText(res.toString())
-                }
-                Operation.DIVIDE -> {
-                    val divisor = input.text.toString().toDouble()
-
-                    if(divisor!=0.0) {
-                        val res=stash.text.toString().toDouble()/divisor
+            if (!input.text.toString().isNullOrEmpty() && !stash.text.toString().isNullOrEmpty()){
+                when (operation) {
+                    Operation.PLUS -> {
+                        val res =
+                            input.text.toString().toDouble() + stash.text.toString().toDouble()
                         input.setText(res.toString())
                     }
-                    else {
-                        AlertDialog
-                            .Builder(this@MainActivity)
-                            .setTitle(getString(R.string.error_title))
-                            .setMessage(getString(R.string.error_message))
-                            .show()
+                    Operation.MINUS -> {
+                        val res =
+                            stash.text.toString().toDouble() - input.text.toString().toDouble()
+                        input.setText(res.toString())
+                    }
+                    Operation.MULTIPLY -> {
+                        val res =
+                            input.text.toString().toDouble() * stash.text.toString().toDouble()
+                        input.setText(res.toString())
+                    }
+                    Operation.DIVIDE -> {
+                        val divisor = input.text.toString().toDouble()
+
+                        if (divisor != 0.0) {
+                            val res = stash.text.toString().toDouble() / divisor
+                            input.setText(res.toString())
+                        } else {
+                            AlertDialog
+                                .Builder(this@MainActivity)
+                                .setTitle(getString(R.string.error_title))
+                                .setMessage(getString(R.string.error_message))
+                                .show()
+                        }
                     }
                 }
             }
-
             stash.text = ""
             operation=Operation.MAIN_STATUS
         }
     }
     fun onTapBPlus(view: View){
         with(binding) {
-            if (input.text.toString().isNullOrEmpty()) return
             if (operation==Operation.MAIN_STATUS) {
                 stash.setText(input.getText().toString())
                 operation=Operation.PLUS
@@ -110,7 +111,6 @@ class MainActivity : AppCompatActivity() {
     }
     fun onTapBMinus(view: View){
         with(binding) {
-            if (input.text.toString().isNullOrEmpty()) return
             if (operation==Operation.MAIN_STATUS) {
                 stash.setText(input.getText().toString())
                 operation=Operation.MINUS
@@ -124,7 +124,6 @@ class MainActivity : AppCompatActivity() {
     }
     fun onTapBMultiply(view: View){
         with(binding) {
-            if (input.text.toString().isNullOrEmpty()) return
             if (operation==Operation.MAIN_STATUS) {
                 stash.setText(input.getText().toString())
                 operation=Operation.MULTIPLY
@@ -138,7 +137,6 @@ class MainActivity : AppCompatActivity() {
     }
     fun onTapBDivide(view: View){
         with(binding) {
-            if (input.text.toString().isNullOrEmpty()) return
             if (operation==Operation.MAIN_STATUS) {
                 stash.setText(input.getText().toString())
                 operation=Operation.DIVIDE
