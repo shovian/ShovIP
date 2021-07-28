@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
     }
     fun onTapBEqual(view: View){
         with(binding){
-            if (input.text.toString() == "" && stash.text.toString() ==  "" ) return
+            if (input.text.toString().isNullOrEmpty() && stash.text.toString().isNullOrEmpty() ) return
             when(operation){
                 Operation.PLUS -> {
                     val res=input.text.toString().toDouble()+stash.text.toString().toDouble()
@@ -90,13 +90,13 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            stash.setText("")
+            stash.text = ""
             operation=Operation.MAIN_STATUS
         }
     }
     fun onTapBPlus(view: View){
         with(binding) {
-            if (input.text.toString() ==  "" ) return
+            if (input.text.toString().isNullOrEmpty()) return
             if (operation==Operation.MAIN_STATUS) {
                 stash.setText(input.getText().toString())
                 operation=Operation.PLUS
@@ -110,7 +110,7 @@ class MainActivity : AppCompatActivity() {
     }
     fun onTapBMinus(view: View){
         with(binding) {
-            if (input.text.toString() ==  "" ) return
+            if (input.text.toString().isNullOrEmpty()) return
             if (operation==Operation.MAIN_STATUS) {
                 stash.setText(input.getText().toString())
                 operation=Operation.MINUS
@@ -124,7 +124,7 @@ class MainActivity : AppCompatActivity() {
     }
     fun onTapBMultiply(view: View){
         with(binding) {
-            if (input.text.toString() ==  "") return
+            if (input.text.toString().isNullOrEmpty()) return
             if (operation==Operation.MAIN_STATUS) {
                 stash.setText(input.getText().toString())
                 operation=Operation.MULTIPLY
@@ -138,7 +138,7 @@ class MainActivity : AppCompatActivity() {
     }
     fun onTapBDivide(view: View){
         with(binding) {
-            if (input.text.toString() ==  "" ) return
+            if (input.text.toString().isNullOrEmpty()) return
             if (operation==Operation.MAIN_STATUS) {
                 stash.setText(input.getText().toString())
                 operation=Operation.DIVIDE
@@ -152,7 +152,7 @@ class MainActivity : AppCompatActivity() {
     }
     fun onTapBClear(view: View){
         with(binding) {
-            stash.setText("")
+            stash.text = ""
             operation=Operation.MAIN_STATUS
             input.setText("")
         }
