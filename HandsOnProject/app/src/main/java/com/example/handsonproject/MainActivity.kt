@@ -1,6 +1,7 @@
 package com.example.handsonproject
 
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -27,39 +28,60 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun onTapB1(view: View){
-        with(binding) { input.setText(input.getText().toString() + "1") }
+    @SuppressLint("SetTextI18n")
+    fun onTapB1(@Suppress("UNUSED_PARAMETER")view: View){
+        with(binding) {
+            input.setText(input.text.toString() + "1") }
     }
-    fun onTapB2(view: View){
-        with(binding) { input.setText(input.getText().toString() + "2") }
+
+    @SuppressLint("SetTextI18n")
+    fun onTapB2(@Suppress("UNUSED_PARAMETER")view: View){
+        with(binding) { input.setText(input.text.toString() + "2") }
     }
-    fun onTapB3(view: View){
-        with(binding) { input.setText(input.getText().toString() + "3") }
+
+    @SuppressLint("SetTextI18n")
+    fun onTapB3(@Suppress("UNUSED_PARAMETER")view: View){
+        with(binding) { input.setText(input.text.toString() + "3") }
     }
-    fun onTapB4(view: View){
-        with(binding) { input.setText(input.getText().toString() + "4") }
+
+    @SuppressLint("SetTextI18n")
+    fun onTapB4(@Suppress("UNUSED_PARAMETER")view: View){
+        with(binding) { input.setText(input.text.toString() + "4") }
     }
-    fun onTapB5(view: View){
-        with(binding) { input.setText(input.getText().toString() + "5") }
+
+    @SuppressLint("SetTextI18n")
+    fun onTapB5(@Suppress("UNUSED_PARAMETER")view: View){
+        with(binding) { input.setText(input.text.toString() + "5") }
     }
-    fun onTapB6(view: View){
-        with(binding) { input.setText(input.getText().toString() + "6") }
+
+    @SuppressLint("SetTextI18n")
+    fun onTapB6(@Suppress("UNUSED_PARAMETER")view: View){
+        with(binding) { input.setText(input.text.toString() + "6") }
     }
-    fun onTapB7(view: View){
-        with(binding) { input.setText(input.getText().toString() + "7") }
+
+    @SuppressLint("SetTextI18n")
+    fun onTapB7(@Suppress("UNUSED_PARAMETER")view: View){
+        with(binding) { input.setText(input.text.toString() + "7") }
     }
-    fun onTapB8(view: View){
-        with(binding) { input.setText(input.getText().toString() + "8") }
+
+    @SuppressLint("SetTextI18n")
+    fun onTapB8(@Suppress("UNUSED_PARAMETER")view: View){
+        with(binding) { input.setText(input.text.toString() + "8") }
     }
-    fun onTapB9(view: View){
-        with(binding) { input.setText(input.getText().toString() + "9") }
+
+    @SuppressLint("SetTextI18n")
+    fun onTapB9(@Suppress("UNUSED_PARAMETER") view: View){
+        with(binding) { input.setText(input.text.toString() + "9") }
     }
-    fun onTapB0(view: View){
-        with(binding) { input.setText(input.getText().toString() + "0") }
+
+    @SuppressLint("SetTextI18n")
+    fun onTapB0(@Suppress("UNUSED_PARAMETER")view: View){
+        with(binding) { input.setText(input.text.toString() + "0") }
     }
-    fun onTapBEqual(view: View){
+
+    fun onTapBEqual(@Suppress("UNUSED_PARAMETER") view: View){
         with(binding){
-            if (!input.text.toString().isNullOrEmpty() && !stash.text.toString().isNullOrEmpty()){
+            if (input.text.toString().isNotEmpty() && stash.text.toString().isNotEmpty()){
                 when (operation) {
                     Operation.PLUS -> {
                         val res =
@@ -90,6 +112,9 @@ class MainActivity : AppCompatActivity() {
                                 .show()
                         }
                     }
+                    Operation.MAIN_STATUS -> {
+                      // do nothing
+                    }
                 }
             }
             stash.text = ""
@@ -99,8 +124,8 @@ class MainActivity : AppCompatActivity() {
     fun onTapBPlus(view: View){
         with(binding) {
             if (operation==Operation.MAIN_STATUS) {
-                stash.setText(input.getText().toString())
-                operation=Operation.PLUS
+                stash.text = input.text.toString()
+                operation = Operation.PLUS
             }
             else {
                 onTapBEqual(view)
@@ -112,7 +137,7 @@ class MainActivity : AppCompatActivity() {
     fun onTapBMinus(view: View){
         with(binding) {
             if (operation==Operation.MAIN_STATUS) {
-                stash.setText(input.getText().toString())
+                stash.text = input.text.toString()
                 operation=Operation.MINUS
             }
             else {
@@ -125,7 +150,7 @@ class MainActivity : AppCompatActivity() {
     fun onTapBMultiply(view: View){
         with(binding) {
             if (operation==Operation.MAIN_STATUS) {
-                stash.setText(input.getText().toString())
+                stash.text = input.text.toString()
                 operation=Operation.MULTIPLY
             }
             else {
@@ -138,7 +163,7 @@ class MainActivity : AppCompatActivity() {
     fun onTapBDivide(view: View){
         with(binding) {
             if (operation==Operation.MAIN_STATUS) {
-                stash.setText(input.getText().toString())
+                stash.text = input.text.toString()
                 operation=Operation.DIVIDE
             }
             else {
@@ -148,7 +173,7 @@ class MainActivity : AppCompatActivity() {
             input.setText("")
         }
     }
-    fun onTapBClear(view: View){
+    fun onTapBClear(@Suppress("UNUSED_PARAMETER") view: View){
         with(binding) {
             stash.text = ""
             operation=Operation.MAIN_STATUS
