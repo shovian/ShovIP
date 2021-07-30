@@ -1,0 +1,4 @@
+com/example/shovip/BuildConfig.java
+ com.example.shovip.BuildConfig
+com/example/shovip/databinding/ActivityMainBinding.java
+ com.example.shovip.databinding.ActivityMainBinding
