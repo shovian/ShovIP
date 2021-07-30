@@ -1,4 +1,0 @@
-#Tue Jul 27 22:09:31 WIB 2021
-base.0=/home/shovian/AndroidStudioProjects/ShovIP/app/build/intermediates/dex/debug/mergeDexDebug/classes.dex
-renamed.0=classes.dex
-path.0=classes.dex
