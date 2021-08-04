@@ -3,33 +3,48 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/DialPadFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.example.shovip.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        android:id="@+id/DialPadFragment"
+        android:name="com.example.shovip.DialPadFragment"
+        android:label="@string/dialPad_fragment_label"
+        tools:layout="@layout/fragment_dialPad">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_DialPadFragment_to_VoiceCallFragment"
+            app:destination="@id/VoiceCallFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.example.shovip.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        android:id="@+id/VoiceCallFragment"
+        android:name="com.example.shovip.VoiceCallFragment"
+        android:label="@string/voiceCall_fragment_label"
+        tools:layout="@layout/fragment_voiceCall">
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_VoiceCallFragmentto_DialPadFragment"
+            app:destination="@id/DialPadFragment" />
+        <action
+            android:id="@+id/action_VoiceCallFragmentto_VideoCallFragment"
+            app:destination="@id/VideoCallFragment" />
     </fragment>
     <fragment
         android:id="@+id/SettingsFragment"
         android:name="com.example.shovip.SettingsFragment"
         android:label="@string/settings_fragment_label"
         tools:layout="@layout/fragment_settings">
+    </fragment>
+    <fragment
+        android:id="@+id/VideoCallFragment"
+        android:name="com.example.shovip.VideoCallFragment"
+        android:label="@string/videoCall_fragment_label"
+        tools:layout="@layout/fragment_videoCall">
+        <action
+            android:id="@+id/action_VideoCallFragment_to_DialPadFragment"
+            app:destination="@id/DialPadFragment" />
+        <action
+            android:id="@+id/action_VideoCallFragment_to_VoiceCallFragment"
+            app:destination="@id/VoiceCallFragment" />
     </fragment>
 
 </navigation>
