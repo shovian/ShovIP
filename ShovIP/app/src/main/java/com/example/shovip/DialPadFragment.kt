@@ -35,6 +35,38 @@ class DialPadFragment : Fragment() {
         binding.buttonFirst.setOnClickListener {
             findNavController().navigate(R.id.action_DialPadFragment_to_VoiceCallFragment)
         }
+        with(binding){
+            b1.setOnClickListener{
+                number.setText(number.text.toString()+1.toString())
+            }
+            b2.setOnClickListener{
+                number.setText(number.text.toString()+2.toString())
+            }
+            b3.setOnClickListener{
+                number.setText(number.text.toString()+3.toString())
+            }
+            b4.setOnClickListener{
+                number.setText(number.text.toString()+4.toString())
+            }
+            b5.setOnClickListener{
+                number.setText(number.text.toString()+5.toString())
+            }
+            b6.setOnClickListener{
+                number.setText(number.text.toString()+6.toString())
+            }
+            b7.setOnClickListener{
+                number.setText(number.text.toString()+7.toString())
+            }
+            b8.setOnClickListener{
+                number.setText(number.text.toString()+8.toString())
+            }
+            b9.setOnClickListener{
+                number.setText(number.text.toString()+9.toString())
+            }
+            b0.setOnClickListener{
+                number.setText(number.text.toString()+0.toString())
+            }
+        }
     }
 
     override fun onDestroyView() {

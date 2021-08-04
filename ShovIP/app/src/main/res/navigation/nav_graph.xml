@@ -9,7 +9,7 @@
         android:id="@+id/DialPadFragment"
         android:name="com.example.shovip.DialPadFragment"
         android:label="@string/dialPad_fragment_label"
-        tools:layout="@layout/fragment_dialPad">
+        tools:layout="@layout/fragment_dial_pad">
 
         <action
             android:id="@+id/action_DialPadFragment_to_VoiceCallFragment"
@@ -33,6 +33,9 @@
         android:name="com.example.shovip.SettingsFragment"
         android:label="@string/settings_fragment_label"
         tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_SettingsFragment_to_DialPadFragment"
+            app:destination="@id/DialPadFragment" />
     </fragment>
     <fragment
         android:id="@+id/VideoCallFragment"
