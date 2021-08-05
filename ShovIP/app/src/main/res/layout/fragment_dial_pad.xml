@@ -136,7 +136,31 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginLeft="44dp"
+        android:layout_marginBottom="13dp"
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/indicatorLight"
+        android:layout_width="21dp"
+        android:layout_height="18dp"
+        android:layout_marginEnd="367dp"
+        android:layout_marginRight="367dp"
+        android:layout_marginBottom="13dp"
+        android:contentDescription="@string/indicator"
+        android:src="@drawable/_200px_font_awesome_5_solid_circle_svg"
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@android:color/holo_green_light" />
 </androidx.constraintlayout.widget.ConstraintLayout>
