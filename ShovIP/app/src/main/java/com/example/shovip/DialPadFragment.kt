@@ -14,20 +14,16 @@ import com.example.shovip.databinding.FragmentDialPadBinding
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class DialPadFragment : Fragment() {
-
-    private var _binding: FragmentDialPadBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    private var binding by autoCleared<FragmentDialPadBinding>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentDialPadBinding.inflate(inflater, container, false)
+        binding = FragmentDialPadBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     @SuppressLint("SetTextI18n")
     private fun loadData(){
         val act = this.activity
@@ -76,10 +72,5 @@ class DialPadFragment : Fragment() {
                 number.setText(number.text.toString()+0.toString())
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
