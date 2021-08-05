@@ -18,7 +18,7 @@ class VideoCallFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentVideoCallBinding.inflate(inflater, container, false)
         return binding.root
@@ -27,10 +27,10 @@ class VideoCallFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.button11.setOnClickListener(){
+        binding.bSwitch.setOnClickListener {
             findNavController().navigate(R.id.action_VideoCallFragment_to_VoiceCallFragment)
         }
-        binding.buttonSecond.setOnClickListener {
+        binding.bHangup.setOnClickListener {
             findNavController().navigate(R.id.action_VideoCallFragment_to_DialPadFragment)
         }
     }
