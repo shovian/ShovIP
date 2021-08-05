@@ -6,27 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.example.shovip.databinding.FragmentVideoCallBinding
 import com.example.shovip.databinding.FragmentVoiceCallBinding
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 class VoiceCallFragment : Fragment() {
-
-    private var _binding: FragmentVoiceCallBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    private var binding by autoCleared<FragmentVoiceCallBinding>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        _binding = FragmentVoiceCallBinding.inflate(inflater, container, false)
+        binding = FragmentVoiceCallBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,10 +31,5 @@ class VoiceCallFragment : Fragment() {
         binding.bHangup.setOnClickListener {
             findNavController().navigate(R.id.action_VoiceCallFragment_to_DialPadFragment)
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

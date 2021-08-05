@@ -8,20 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.shovip.databinding.FragmentDialPadBinding
 import com.example.shovip.databinding.FragmentSettingsBinding
 
 class SettingsFragment : Fragment() {
-    private var _binding: FragmentSettingsBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    private var binding by autoCleared<FragmentSettingsBinding>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        binding = FragmentSettingsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -35,10 +32,7 @@ class SettingsFragment : Fragment() {
         }
 
     }
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+
     private fun loadData(){
         val act = this.activity
         val sharedPreferences = act!!.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
@@ -51,6 +45,7 @@ class SettingsFragment : Fragment() {
             domain.setText(textSaved)
         }
     }
+
     private fun saveData(){
         val act = this.activity
         with(binding){
@@ -70,7 +65,5 @@ class SettingsFragment : Fragment() {
             }.apply()
             Toast.makeText(act,"Data Saved",Toast.LENGTH_SHORT).show()
         }
-
-
     }
 }
