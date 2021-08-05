@@ -31,10 +31,10 @@ class VoiceCallFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.button11.setOnClickListener {
+        binding.bSwitch.setOnClickListener {
             findNavController().navigate(R.id.action_VoiceCallFragment_to_VideoCallFragment)
         }
-        binding.buttonSecond.setOnClickListener {
+        binding.bHangup.setOnClickListener {
             findNavController().navigate(R.id.action_VoiceCallFragment_to_DialPadFragment)
         }
     }
