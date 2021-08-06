@@ -2,11 +2,13 @@ package com.example.shovip
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.example.shovip.databinding.FragmentDialPadBinding
 
@@ -14,7 +16,7 @@ import com.example.shovip.databinding.FragmentDialPadBinding
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class DialPadFragment : Fragment() {
-    private var binding by autoCleared<FragmentDialPadBinding>()
+    private lateinit var binding : FragmentDialPadBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,10 +28,20 @@ class DialPadFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun loadData(){
-        val act = this.activity
-        val sharedPreferences = act!!.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
-        with(binding){
-            account.text = sharedPreferences.getString("uUSERNAME",null) + "@" + sharedPreferences.getString("DOMAIN",null)
+        activity?.let{
+            val sharedPreferences = it.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+            with(binding) {
+                
+                binding.indicatorLight.setColorFilter(Color.GREEN)
+                if (sharedPreferences.getString("USERNAME", "") != "" ||
+                    sharedPreferences.getString("DOMAIN", "") != "") {
+                    account.text = sharedPreferences.getString("USERNAME", "") + "@" + sharedPreferences.getString("DOMAIN", "")
+                }
+                else {
+                    binding.indicatorLight.setColorFilter(Color.RED)
+                    account.text = "No Account"
+                }
+            }
         }
     }
     @SuppressLint("SetTextI18n")

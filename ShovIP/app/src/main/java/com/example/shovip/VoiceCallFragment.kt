@@ -6,19 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.example.shovip.databinding.FragmentVideoCallBinding
 import com.example.shovip.databinding.FragmentVoiceCallBinding
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 class VoiceCallFragment : Fragment() {
-    private var binding by autoCleared<FragmentVoiceCallBinding>()
+    private lateinit var binding : FragmentVoiceCallBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentVoiceCallBinding.inflate(inflater, container, false)
         return binding.root
     }

@@ -8,11 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.shovip.databinding.FragmentDialPadBinding
 import com.example.shovip.databinding.FragmentSettingsBinding
 
 class SettingsFragment : Fragment() {
-    private var binding by autoCleared<FragmentSettingsBinding>()
+    private lateinit var binding : FragmentSettingsBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -22,27 +21,25 @@ class SettingsFragment : Fragment() {
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         super.onViewCreated(view, savedInstanceState)
         loadData()
         binding.button.setOnClickListener {
             saveData()
         }
-
     }
 
     private fun loadData(){
-        val act = this.activity
-        val sharedPreferences = act!!.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
-        with(binding){
-            var textSaved = sharedPreferences.getString("USERNAME",null)
-            username.setText(textSaved)
-            textSaved = sharedPreferences.getString("PASSWORD",null)
-            password.setText(textSaved)
-            textSaved = sharedPreferences.getString("DOMAIN",null)
-            domain.setText(textSaved)
+        activity?.let{
+            val sharedPreferences = it.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+            with(binding) {
+                var textSaved = sharedPreferences.getString("USERNAME", "")
+                username.setText(textSaved)
+                textSaved = sharedPreferences.getString("PASSWORD", "")
+                password.setText(textSaved)
+                textSaved = sharedPreferences.getString("DOMAIN", "")
+                domain.setText(textSaved)
+            }
         }
     }
 
