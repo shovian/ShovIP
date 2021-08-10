@@ -12,7 +12,7 @@ import com.example.shovip.databinding.FragmentVoiceCallBinding
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 class VoiceCallFragment : Fragment() {
-    private lateinit var binding : FragmentVoiceCallBinding
+    private var binding by autoCleared<FragmentVoiceCallBinding>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

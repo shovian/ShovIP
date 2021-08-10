@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.shovip.databinding.FragmentVideoCallBinding
 
 class VideoCallFragment : Fragment() {
-    private lateinit var binding : FragmentVideoCallBinding
+    private var binding by autoCleared<FragmentVideoCallBinding>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

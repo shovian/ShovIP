@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import com.example.shovip.databinding.FragmentSettingsBinding
 
 class SettingsFragment : Fragment() {
-    private lateinit var binding : FragmentSettingsBinding
+    private var binding by autoCleared<FragmentSettingsBinding>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -1,6 +1,5 @@
 package com.example.shovip
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
@@ -8,43 +7,44 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.example.shovip.databinding.FragmentDialPadBinding
+import android.annotation.SuppressLint as SuppressLint1
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class DialPadFragment : Fragment() {
-    private lateinit var binding : FragmentDialPadBinding
+    private var binding by autoCleared<FragmentDialPadBinding>()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentDialPadBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint1("SetTextI18n")
     private fun loadData(){
         activity?.let{
             val sharedPreferences = it.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
             with(binding) {
                 
                 binding.indicatorLight.setColorFilter(Color.GREEN)
-                if (sharedPreferences.getString("USERNAME", "") != "" ||
-                    sharedPreferences.getString("DOMAIN", "") != "") {
+                if (sharedPreferences.getString("USERNAME", "").isNullOrEmpty()||
+                    sharedPreferences.getString("DOMAIN", "").isNullOrEmpty()) {
                     account.text = sharedPreferences.getString("USERNAME", "") + "@" + sharedPreferences.getString("DOMAIN", "")
                 }
                 else {
                     binding.indicatorLight.setColorFilter(Color.RED)
-                    account.text = "No Account"
+                    account.text = getString(R.string.no_account)
                 }
             }
         }
     }
-    @SuppressLint("SetTextI18n")
+    @SuppressLint1("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadData()
