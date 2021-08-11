@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">ShovIP</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="dialPad_fragment_label">Dial Pad</string>
+    <string name="voiceCall_fragment_label">Voice Call</string>
+    <string name="settings_fragment_label">Settings</string>
+    <string name="videoCall_fragment_label">Video Call</string>
+    <string name="_4">4</string>
+    <string name="_0">0</string>
+    <string name="_7">7</string>
+    <string name="_3">3</string>
+    <string name="_8">8</string>
+    <string name="_2">2</string>
+    <string name="_6">6</string>
+    <string name="_1">1</string>
+    <string name="_9">9</string>
+    <string name="_5">5</string>
+    <string name="indicator">indicator</string>
+    <string name="domain">Domain</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="video_pad">Video Pad</string>
+    <string name="contactpad">ContactPad</string>
+    <string name="defaultpic">defaultPic</string>
+    <string name="no_account">No Account</string>
+</resources>

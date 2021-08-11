@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/DialPadFragment">
+
+    <fragment
+        android:id="@+id/DialPadFragment"
+        android:name="com.example.shovip.DialPadFragment"
+        android:label="@string/dialPad_fragment_label"
+        tools:layout="@layout/fragment_dial_pad">
+
+        <action
+            android:id="@+id/action_DialPadFragment_to_VoiceCallFragment"
+            app:destination="@id/VoiceCallFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/VoiceCallFragment"
+        android:name="com.example.shovip.VoiceCallFragment"
+        android:label="@string/voiceCall_fragment_label"
+        tools:layout="@layout/fragment_voice_call">
+
+        <action
+            android:id="@+id/action_VoiceCallFragment_to_DialPadFragment"
+            app:destination="@id/DialPadFragment" />
+        <action
+            android:id="@+id/action_VoiceCallFragment_to_VideoCallFragment"
+            app:destination="@id/VideoCallFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/SettingsFragment"
+        android:name="com.example.shovip.SettingsFragment"
+        android:label="@string/settings_fragment_label"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_SettingsFragment_to_DialPadFragment"
+            app:destination="@id/DialPadFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/VideoCallFragment"
+        android:name="com.example.shovip.VideoCallFragment"
+        android:label="@string/videoCall_fragment_label"
+        tools:layout="@layout/fragment_video_call">
+        <action
+            android:id="@+id/action_VideoCallFragment_to_DialPadFragment"
+            app:destination="@id/DialPadFragment" />
+        <action
+            android:id="@+id/action_VideoCallFragment_to_VoiceCallFragment"
+            app:destination="@id/VoiceCallFragment" />
+    </fragment>
+
+</navigation>
