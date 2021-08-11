@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.example.shovip.databinding.FragmentVideoCallBinding
 import com.example.shovip.databinding.FragmentVoiceCallBinding
 
 /**
@@ -18,7 +17,7 @@ class VoiceCallFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentVoiceCallBinding.inflate(inflater, container, false)
         return binding.root
     }

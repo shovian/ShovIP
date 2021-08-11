@@ -21,4 +21,7 @@
     <string name="password">Password</string>
     <string name="username">Username</string>
     <string name="video_pad">Video Pad</string>
+    <string name="contactpad">ContactPad</string>
+    <string name="defaultpic">defaultPic</string>
+    <string name="no_account">No Account</string>
 </resources>
