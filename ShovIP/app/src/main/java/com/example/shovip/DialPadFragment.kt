@@ -9,6 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.shovip.databinding.FragmentDialPadBinding
+import org.mjsip.sip.address.GenericURI
+import org.mjsip.sip.address.NameAddress
+import org.mjsip.sip.call.Call
+import org.mjsip.sip.call.CallListener
+import org.mjsip.sip.call.CallListenerAdapter
+import org.mjsip.sip.call.SipUser
+import org.mjsip.sip.provider.SipProvider
+import org.mjsip.ua.UserAgent
+import org.mjsip.ua.UserAgentProfile
+import org.mjsip.ua.cli.UserAgentCli
 import android.annotation.SuppressLint as SuppressLint1
 
 /**
@@ -48,10 +58,32 @@ class DialPadFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadData()
-
+        val call : Call?
+        var dmn : String? = ""
+        var usr : String? = ""
+        var prt : Int = 5060
+        activity?.let{
+            val sharedPreferences = it.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+            usr =sharedPreferences.getString("USERNAME","")
+            dmn= sharedPreferences.getString("DOMAIN","")
+        }
+        call=Call(
+            SipProvider(dmn,prt),
+            SipUser(NameAddress(usr, GenericURI(dmn))),
+            UserAgent(
+                SipProvider(dmn,prt),
+                UserAgentProfile(),
+                UserAgentCli(
+                    SipProvider(dmn,prt),
+                    UserAgentProfile()
+                )
+            )
+        )
+        call.listen()
         with(binding){
             buttonFirst.setOnClickListener {
                 findNavController().navigate(R.id.action_DialPadFragment_to_VoiceCallFragment)
+                call.call(NameAddress(number.text.toString(),GenericURI(dmn)))
             }
             b1.setOnClickListener{
                 number.setText(number.text.toString()+1.toString())
