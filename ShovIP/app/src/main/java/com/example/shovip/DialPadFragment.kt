@@ -1,7 +1,9 @@
 package com.example.shovip
 
 import android.content.Context
+import android.net.sip.*
 import android.graphics.Color
+import android.net.sip.SipManager
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,7 +18,9 @@ import android.annotation.SuppressLint as SuppressLint1
  */
 class DialPadFragment : Fragment() {
     private var binding by autoCleared<FragmentDialPadBinding>()
-
+    val sipManager: SipManager? by lazy(LazyThreadSafetyMode.NONE) {
+        SipManager.newInstance(this)
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
