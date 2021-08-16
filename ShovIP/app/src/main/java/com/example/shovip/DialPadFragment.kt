@@ -18,9 +18,7 @@ import android.annotation.SuppressLint as SuppressLint1
  */
 class DialPadFragment : Fragment() {
     private var binding by autoCleared<FragmentDialPadBinding>()
-    val sipManager: SipManager? by lazy(LazyThreadSafetyMode.NONE) {
-        SipManager.newInstance(this)
-    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -48,6 +46,7 @@ class DialPadFragment : Fragment() {
             }
         }
     }
+    
     @SuppressLint1("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
