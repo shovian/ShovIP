@@ -1,6 +1,8 @@
 package com.example.shovip
 
+import android.content.Context
 import android.net.sip.SipManager
+import android.net.sip.SipProfile
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -18,6 +20,11 @@ class MainActivity : AppCompatActivity() {
     val sipManager: SipManager? by lazy(LazyThreadSafetyMode.NONE) {
         SipManager.newInstance(this)
     }
+    val sipProfile : SipProfile? = null
+    val builder = activity?.let{ SipProfile.Builder(it.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE).getString("USERNAME", ""),it.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE).getString("DOMAIN", "")).setPassword(it.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE).getString("PASSWORD", ""))}
+    val intent = Intent("android.SipDemo.INCOMING_CALL")
+    val pendingIntent: PendingIntent = PendingIntent.getBroadcast(this, 0, intent, Intent.FILL_IN_DATA)
+    sipManager?.open(sipProfile, pendingIntent, null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

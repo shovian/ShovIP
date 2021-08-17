@@ -1,9 +1,8 @@
 package com.example.shovip
 
 import android.content.Context
-import android.net.sip.*
 import android.graphics.Color
-import android.net.sip.SipManager
+import android.net.sip.SipRegistrationListener
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -18,7 +17,25 @@ import android.annotation.SuppressLint as SuppressLint1
  */
 class DialPadFragment : Fragment() {
     private var binding by autoCleared<FragmentDialPadBinding>()
+    val sipManager = ((MainActivity)activity).sipManager
+    act.sipManager?.setRegistrationListener(sipProfile?.uriString, object : SipRegistrationListener {
 
+        override fun onRegistering(localProfileUri: String) {
+            updateStatus("Registering with SIP Server...")
+        }
+
+        override fun onRegistrationDone(localProfileUri: String, expiryTime: Long) {
+            updateStatus("Ready")
+        }
+
+        override fun onRegistrationFailed(
+            localProfileUri: String,
+            errorCode: Int,
+            errorMessage: String
+        ) {
+            updateStatus("Registration failed. Please check settings.")
+        }
+    })
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
