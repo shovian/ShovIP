@@ -20,11 +20,7 @@ class MainActivity : AppCompatActivity() {
     val sipManager: SipManager? by lazy(LazyThreadSafetyMode.NONE) {
         SipManager.newInstance(this)
     }
-    val sipProfile : SipProfile? = null
-    val builder = activity?.let{ SipProfile.Builder(it.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE).getString("USERNAME", ""),it.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE).getString("DOMAIN", "")).setPassword(it.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE).getString("PASSWORD", ""))}
-    val intent = Intent("android.SipDemo.INCOMING_CALL")
-    val pendingIntent: PendingIntent = PendingIntent.getBroadcast(this, 0, intent, Intent.FILL_IN_DATA)
-    sipManager?.open(sipProfile, pendingIntent, null)
+    var sipProfile : SipProfile? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +30,12 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+        val sharedPreferences = getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+        val builder = SipProfile.Builder(sharedPreferences.getString("USERNAME", ""), sharedPreferences.getString("DOMAIN", ""))
+            .setPassword(sharedPreferences.getString("PASSWORD", ""))
+        sipProfile = builder.build()
+        sipManager?.open(sipProfile, null, null)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

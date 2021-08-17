@@ -17,25 +17,7 @@ import android.annotation.SuppressLint as SuppressLint1
  */
 class DialPadFragment : Fragment() {
     private var binding by autoCleared<FragmentDialPadBinding>()
-    val sipManager = ((MainActivity)activity).sipManager
-    act.sipManager?.setRegistrationListener(sipProfile?.uriString, object : SipRegistrationListener {
 
-        override fun onRegistering(localProfileUri: String) {
-            updateStatus("Registering with SIP Server...")
-        }
-
-        override fun onRegistrationDone(localProfileUri: String, expiryTime: Long) {
-            updateStatus("Ready")
-        }
-
-        override fun onRegistrationFailed(
-            localProfileUri: String,
-            errorCode: Int,
-            errorMessage: String
-        ) {
-            updateStatus("Registration failed. Please check settings.")
-        }
-    })
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -104,5 +86,29 @@ class DialPadFragment : Fragment() {
                 number.setText(number.text.toString()+0.toString())
             }
         }
+
+        // TODO: cast to MainActivity is repetitive, is there any better way to do this?
+        (activity as MainActivity).sipManager?.setRegistrationListener((activity as MainActivity).sipProfile?.uriString, object : SipRegistrationListener {
+
+            override fun onRegistering(localProfileUri: String) {
+                // TODO: this is temporary
+                // updateStatus("Registering with SIP Server...")
+                binding.account.text = "Registering..."
+            }
+
+            override fun onRegistrationDone(localProfileUri: String, expiryTime: Long) {
+                // TODO: this is temporary
+                binding.account.text = "Ready"
+            }
+
+            override fun onRegistrationFailed(
+                localProfileUri: String,
+                errorCode: Int,
+                errorMessage: String
+            ) {
+                // TODO: this is temporary
+                binding.account.text = "Error"
+            }
+        })
     }
 }
