@@ -30,11 +30,22 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
+    }
 
+    fun reloadSipProfile() {
+        // TODO: This is where we start working with SIP, so request the permissions here
+
+        sipProfile?.let {
+            // TODO: Cleanup any old SipProfile, add "closeProfile" code here
+        }
+
+        // Create SipProfile
         val sharedPreferences = getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
         val builder = SipProfile.Builder(sharedPreferences.getString("USERNAME", ""), sharedPreferences.getString("DOMAIN", ""))
             .setPassword(sharedPreferences.getString("PASSWORD", ""))
         sipProfile = builder.build()
+
+        // Register to the SIP server
         sipManager?.open(sipProfile, null, null)
     }
 

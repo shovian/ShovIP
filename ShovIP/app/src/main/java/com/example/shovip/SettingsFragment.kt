@@ -61,6 +61,9 @@ class SettingsFragment : Fragment() {
                 putString("DOMAIN",insertedText)
             }.apply()
             Toast.makeText(act,"Data Saved",Toast.LENGTH_SHORT).show()
+
+            // Also, reload the SipProfile
+            (activity as MainActivity).reloadSipProfile()
         }
     }
 }

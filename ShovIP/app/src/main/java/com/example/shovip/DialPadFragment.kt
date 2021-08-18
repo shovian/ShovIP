@@ -91,13 +91,13 @@ class DialPadFragment : Fragment() {
         (activity as MainActivity).sipManager?.setRegistrationListener((activity as MainActivity).sipProfile?.uriString, object : SipRegistrationListener {
 
             override fun onRegistering(localProfileUri: String) {
-                // TODO: this is temporary
+                // TODO: this is temporary, instead we should change the color of the lamp
                 // updateStatus("Registering with SIP Server...")
                 binding.account.text = "Registering..."
             }
 
             override fun onRegistrationDone(localProfileUri: String, expiryTime: Long) {
-                // TODO: this is temporary
+                // TODO: this is temporary, instead we should change the color of the lamp
                 binding.account.text = "Ready"
             }
 
@@ -106,9 +106,12 @@ class DialPadFragment : Fragment() {
                 errorCode: Int,
                 errorMessage: String
             ) {
-                // TODO: this is temporary
+                // TODO: this is temporary, instead we should change the color of the lamp
                 binding.account.text = "Error"
             }
         })
+
+        // Also, reload the SipProfile
+        (activity as MainActivity).reloadSipProfile()
     }
 }
