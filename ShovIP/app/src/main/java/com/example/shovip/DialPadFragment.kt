@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.net.sip.SipRegistrationListener
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -85,39 +86,38 @@ class DialPadFragment : Fragment() {
             b0.setOnClickListener{
                 number.setText(number.text.toString()+0.toString())
             }
+            binding.indicatorLight.setColorFilter(Color.RED)
         }
 
-        // TODO: cast to MainActivity is repetitive, is there any better way to do this?
-        val act = activity as MainActivity
-        act.sipManager?.setRegistrationListener(act.sipProfile?.uriString, object : SipRegistrationListener {
+        val mainActivity = activity as MainActivity
+        mainActivity.reloadSipProfile()
 
-            override fun onRegistering(localProfileUri: String) {
-                // TODO: this is temporary, instead we should change the color of the lamp
-                // updateStatus("Registering with SIP Server...")
-                binding.account.text = "Registering..."
+        mainActivity.sipProfile?.let{
+            Log.v("ShovIP", "Setting RegistrationListener...")
+            mainActivity.sipManager?.setRegistrationListener(mainActivity.sipProfile?.uriString, object : SipRegistrationListener {
 
-                binding.indicatorLight.setColorFilter(Color.BLUE)
-            }
+                override fun onRegistering(localProfileUri: String) {
+                    Log.v("ShovIP", "onRegistering()")
+                    binding.account.text = "Registering..."
+                    binding.indicatorLight.setColorFilter(Color.BLUE)
+                }
 
-            override fun onRegistrationDone(localProfileUri: String, expiryTime: Long) {
-                // TODO: this is temporary, instead we should change the color of the lamp
-                binding.account.text = "Ready"
+                override fun onRegistrationDone(localProfileUri: String, expiryTime: Long) {
+                    Log.v("ShovIP", "onRegistrationDone()")
+                    binding.account.text = "Ready"
+                    binding.indicatorLight.setColorFilter(Color.GREEN)
+                }
 
-                binding.indicatorLight.setColorFilter(Color.GREEN)
-            }
-
-            override fun onRegistrationFailed(
-                localProfileUri: String,
-                errorCode: Int,
-                errorMessage: String
-            ) {
-                // TODO: this is temporary, instead we should change the color of the lamp
-                binding.account.text = "Error"
-                binding.indicatorLight.setColorFilter(Color.RED)
-            }
-        })
-
-        // Also, reload the SipProfile
-        (activity as MainActivity).reloadSipProfile()
+                override fun onRegistrationFailed(
+                    localProfileUri: String,
+                    errorCode: Int,
+                    errorMessage: String
+                ) {
+                    Log.v("ShovIP", "onRegistrationFailed() erroCode = $errorCode, errorMessage = $errorMessage")
+                    binding.account.text = "Error"
+                    binding.indicatorLight.setColorFilter(Color.RED)
+                }
+            })
+        }
     }
 }

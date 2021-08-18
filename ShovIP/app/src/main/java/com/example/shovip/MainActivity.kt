@@ -1,5 +1,6 @@
 package com.example.shovip
 
+import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.sip.SipManager
@@ -17,7 +18,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.ui.onNavDestinationSelected
 import com.example.shovip.databinding.ActivityMainBinding
-import java.util.jar.Manifest
 
 class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -37,31 +37,50 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
-    fun reloadSipProfile() {
-        // TODO: This is where we start working with SIP, so request the permissions here
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.USE_SIP)
-            == PackageManager.PERMISSION_GRANTED){
-        }else{
-            ActivityCompat.requestPermissions(this, Manifest.permission.USE_SIP, 0);
+    fun requestPermission() {
+        if ( ContextCompat.checkSelfPermission(this, Manifest.permission.USE_SIP) != PackageManager.PERMISSION_GRANTED ){
+            Log.v("ShovIP", "We don't have USE_SIP permission, requesting it...")
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.USE_SIP), 0);
+        } else {
+            Log.v("ShovIP", "We already have USE_SIP permission, requesting it...")
         }
+
+        if ( ContextCompat.checkSelfPermission(this, Manifest.permission.USE_SIP) != PackageManager.PERMISSION_GRANTED ){
+            // TODO: If we still don't have the permission, display an error dialog and exit the app
+        }
+    }
+
+    fun reloadSipProfile() {
+        Log.v("ShovIP", "Reloading SipProfile...")
+        requestPermission()
+
         sipProfile?.let {
-            // TODO: Cleanup any old SipProfile, add "closeProfile" code here
-            if(sipManager == null){
+            // Cleanup any old SipProfile, add "closeProfile" code here
             try {
-                sipManager?.close(sipProfile?.uriString)
+                Log.v("ShovIP", "Closing old SipProfile...")
+                sipManager?.close(it.uriString)
             } catch (ee: Exception) {
-                Log.d("WalkieTalkieAct/onDes", "Failed to close local profile.", ee)
+                Log.d("ShovIP", "Failed to close local profile.", ee)
             }
-        }}
+        }
 
         // Create SipProfile
         val sharedPreferences = getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
-        val builder = SipProfile.Builder(sharedPreferences.getString("USERNAME", ""), sharedPreferences.getString("DOMAIN", ""))
-            .setPassword(sharedPreferences.getString("PASSWORD", ""))
-        sipProfile = builder.build()
+        val user = sharedPreferences.getString("USERNAME", "")
+        val domain = sharedPreferences.getString("DOMAIN", "")
+        val password = sharedPreferences.getString("PASSWORD", "")
 
-        // Register to the SIP server
-        sipManager?.open(sipProfile, null, null)
+        Log.v("ShovIP", "Building SipProfile for $user@$domain")
+        val builder = SipProfile.Builder(user, domain)
+            .setPassword(password)
+        sipProfile = builder.build()
+        sipProfile?.let {
+            // Register to the SIP server
+            Log.v("ShovIP", "Starting SIP registration...")
+            sipManager?.open(it, null, null)
+        } ?: run {
+            Log.v("ShovIP", "Could not create SipProfile")
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
