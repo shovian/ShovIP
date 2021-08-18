@@ -1,9 +1,11 @@
 package com.example.shovip
 
 import android.content.Context
+import android.content.pm.PackageManager
 import android.net.sip.SipManager
 import android.net.sip.SipProfile
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -11,8 +13,11 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.ui.onNavDestinationSelected
 import com.example.shovip.databinding.ActivityMainBinding
+import java.util.jar.Manifest
 
 class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -34,10 +39,20 @@ class MainActivity : AppCompatActivity() {
 
     fun reloadSipProfile() {
         // TODO: This is where we start working with SIP, so request the permissions here
-
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.USE_SIP)
+            == PackageManager.PERMISSION_GRANTED){
+        }else{
+            ActivityCompat.requestPermissions(this, Manifest.permission.USE_SIP, 0);
+        }
         sipProfile?.let {
             // TODO: Cleanup any old SipProfile, add "closeProfile" code here
-        }
+            if(sipManager == null){
+            try {
+                sipManager?.close(sipProfile?.uriString)
+            } catch (ee: Exception) {
+                Log.d("WalkieTalkieAct/onDes", "Failed to close local profile.", ee)
+            }
+        }}
 
         // Create SipProfile
         val sharedPreferences = getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)

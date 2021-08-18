@@ -88,17 +88,22 @@ class DialPadFragment : Fragment() {
         }
 
         // TODO: cast to MainActivity is repetitive, is there any better way to do this?
-        (activity as MainActivity).sipManager?.setRegistrationListener((activity as MainActivity).sipProfile?.uriString, object : SipRegistrationListener {
+        val act = activity as MainActivity
+        act.sipManager?.setRegistrationListener(act.sipProfile?.uriString, object : SipRegistrationListener {
 
             override fun onRegistering(localProfileUri: String) {
                 // TODO: this is temporary, instead we should change the color of the lamp
                 // updateStatus("Registering with SIP Server...")
                 binding.account.text = "Registering..."
+
+                binding.indicatorLight.setColorFilter(Color.BLUE)
             }
 
             override fun onRegistrationDone(localProfileUri: String, expiryTime: Long) {
                 // TODO: this is temporary, instead we should change the color of the lamp
                 binding.account.text = "Ready"
+
+                binding.indicatorLight.setColorFilter(Color.GREEN)
             }
 
             override fun onRegistrationFailed(
@@ -108,6 +113,7 @@ class DialPadFragment : Fragment() {
             ) {
                 // TODO: this is temporary, instead we should change the color of the lamp
                 binding.account.text = "Error"
+                binding.indicatorLight.setColorFilter(Color.RED)
             }
         })
 
