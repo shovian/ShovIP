@@ -18,6 +18,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.ui.onNavDestinationSelected
 import com.example.shovip.databinding.ActivityMainBinding
+import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -39,14 +40,17 @@ class MainActivity : AppCompatActivity() {
 
     fun requestPermission() {
         if ( ContextCompat.checkSelfPermission(this, Manifest.permission.USE_SIP) != PackageManager.PERMISSION_GRANTED ){
-            Log.v("ShovIP", "We don't have USE_SIP permission, requesting it...")
+            Log.v("ShovIP", "We already have USE_SIP permission, requesting it...")
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.USE_SIP), 0);
         } else {
-            Log.v("ShovIP", "We already have USE_SIP permission, requesting it...")
+            Log.v("ShovIP", "We don't have USE_SIP permission, requesting it...")
         }
 
         if ( ContextCompat.checkSelfPermission(this, Manifest.permission.USE_SIP) != PackageManager.PERMISSION_GRANTED ){
             // TODO: If we still don't have the permission, display an error dialog and exit the app
+            Log.v("ShovIP", "Permission not given, Closing program...")
+            finish()
+            System.exit(-1)
         }
     }
 
@@ -69,17 +73,25 @@ class MainActivity : AppCompatActivity() {
         val user = sharedPreferences.getString("USERNAME", "")
         val domain = sharedPreferences.getString("DOMAIN", "")
         val password = sharedPreferences.getString("PASSWORD", "")
-
-        Log.v("ShovIP", "Building SipProfile for $user@$domain")
-        val builder = SipProfile.Builder(user, domain)
-            .setPassword(password)
-        sipProfile = builder.build()
-        sipProfile?.let {
-            // Register to the SIP server
-            Log.v("ShovIP", "Starting SIP registration...")
-            sipManager?.open(it, null, null)
-        } ?: run {
-            Log.v("ShovIP", "Could not create SipProfile")
+        try{
+            user?.let{
+                domain?.let{
+                    Log.v("ShovIP", "Building SipProfile for $user@$domain")
+                    val builder = SipProfile.Builder(user, domain)
+                        .setPassword(password)
+                    sipProfile = builder.build()
+                    sipProfile?.let {
+                        // Register to the SIP server
+                        Log.v("ShovIP", "Starting SIP registration...")
+                        sipManager?.open(it, null, null)
+                    } ?: run {
+                        Log.v("ShovIP", "Could not create SipProfile")
+                    }
+                }
+            }
+        }
+        catch (ee : Exception){
+            Log.d("ShovIP","error happening", ee)
         }
     }
 
