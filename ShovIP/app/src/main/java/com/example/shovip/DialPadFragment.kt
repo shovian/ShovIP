@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.shovip.databinding.FragmentDialPadBinding
 import android.annotation.SuppressLint as SuppressLint1
@@ -35,8 +36,8 @@ class DialPadFragment : Fragment() {
             with(binding) {
                 
                 binding.indicatorLight.setColorFilter(Color.GREEN)
-                if (sharedPreferences.getString("USERNAME", "").isNullOrEmpty()||
-                    sharedPreferences.getString("DOMAIN", "").isNullOrEmpty()) {
+                if ( !sharedPreferences.getString("USERNAME", "").isNullOrEmpty() &&
+                     !sharedPreferences.getString("DOMAIN", "").isNullOrEmpty()) {
                     account.text = sharedPreferences.getString("USERNAME", "") + "@" + sharedPreferences.getString("DOMAIN", "")
                 }
                 else {
@@ -98,13 +99,11 @@ class DialPadFragment : Fragment() {
 
                 override fun onRegistering(localProfileUri: String) {
                     Log.v("ShovIP", "onRegistering()")
-                    binding.account.text = "Registering..."
                     binding.indicatorLight.setColorFilter(Color.BLUE)
                 }
 
                 override fun onRegistrationDone(localProfileUri: String, expiryTime: Long) {
                     Log.v("ShovIP", "onRegistrationDone()")
-                    binding.account.text = "Ready"
                     binding.indicatorLight.setColorFilter(Color.GREEN)
                 }
 
@@ -113,9 +112,11 @@ class DialPadFragment : Fragment() {
                     errorCode: Int,
                     errorMessage: String
                 ) {
-                    Log.v("ShovIP", "onRegistrationFailed() erroCode = $errorCode, errorMessage = $errorMessage")
-                    binding.account.text = "Error"
+                    Log.v("ShovIP", "onRegistrationFailed() errorCode = $errorCode, errorMessage = $errorMessage")
                     binding.indicatorLight.setColorFilter(Color.RED)
+                    activity?.let{
+                        Toast.makeText(it,"Registration failed. errorCode = $errorCode, errorMessage = $errorMessage", Toast.LENGTH_LONG).show()
+                    }
                 }
             })
         }

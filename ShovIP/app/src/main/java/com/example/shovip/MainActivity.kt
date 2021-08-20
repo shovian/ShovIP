@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
-    fun requestPermission() {
+    private fun requestPermission() {
         if ( ContextCompat.checkSelfPermission(this, Manifest.permission.USE_SIP) != PackageManager.PERMISSION_GRANTED ){
             Log.v("ShovIP", "We don't have USE_SIP permission, requesting it...")
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.USE_SIP), 0);
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         if ( ContextCompat.checkSelfPermission(this, Manifest.permission.USE_SIP) != PackageManager.PERMISSION_GRANTED ){
-            // TODO: display an error dialog
+            // display an error dialog
             Toast.makeText(this,"Permission Denied", Toast.LENGTH_SHORT).show()
             //  exit the app
             Log.v("ShovIP", "Permission not given, Closing program...")
@@ -93,7 +93,8 @@ class MainActivity : AppCompatActivity() {
                 sipProfile?.let {
                     // Register to the SIP server
                     Log.v("ShovIP", "Starting SIP registration...")
-                    // TODO: unfortunately, incomingCallPendingIntent cannot be skipped
+
+                    // TODO: This intent is from an Android demo project and will not work
                     val intent = Intent("android.SipDemo.INCOMING_CALL")
                     val pendingIntent: PendingIntent = PendingIntent.getBroadcast(this, 0, intent, Intent.FILL_IN_DATA)
                     sipManager?.open(it, pendingIntent, null)
