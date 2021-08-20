@@ -28,7 +28,12 @@ class VoiceCallFragment : Fragment() {
             findNavController().navigate(R.id.action_VoiceCallFragment_to_VideoCallFragment)
         }
         binding.bHangup.setOnClickListener {
+            // TODO: Actually hang up the call! You need access to the call object here!
             findNavController().navigate(R.id.action_VoiceCallFragment_to_DialPadFragment)
         }
+
+        // TODO: 1. Create the SipAudioCall.Listener
+
+        // TODO: 2. In onCallEnded() of the SipAudioCall.Listener, you should close this view and return to the dialpad
     }
 }

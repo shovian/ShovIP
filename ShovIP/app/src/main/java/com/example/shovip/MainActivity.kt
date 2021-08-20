@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         SipManager.newInstance(this)
     }
     var sipProfile : SipProfile? = null
+    // TODO: Add call object here
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

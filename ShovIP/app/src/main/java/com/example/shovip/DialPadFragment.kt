@@ -55,6 +55,9 @@ class DialPadFragment : Fragment() {
 
         with(binding){
             buttonFirst.setOnClickListener {
+                // TODO: 1. Retrieve the number from the input field
+                // TODO: 2. If the number is not empty, DIAL with makeAudioCall() function
+                // TODO: 3. Store the call object returned from the makeAudioCall() function to the activity
                 findNavController().navigate(R.id.action_DialPadFragment_to_VoiceCallFragment)
             }
             b1.setOnClickListener{
