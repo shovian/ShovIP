@@ -1,7 +1,9 @@
 package com.example.shovip
 
 import android.Manifest
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.sip.SipManager
 import android.net.sip.SipProfile
@@ -14,6 +16,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.ui.onNavDestinationSelected
@@ -48,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
         if ( ContextCompat.checkSelfPermission(this, Manifest.permission.USE_SIP) != PackageManager.PERMISSION_GRANTED ){
             // TODO: display an error dialog
-
+            Toast.makeText(this,"Permission Denied", Toast.LENGTH_SHORT).show()
             //  exit the app
             Log.v("ShovIP", "Permission not given, Closing program...")
             finish()
@@ -90,9 +93,10 @@ class MainActivity : AppCompatActivity() {
                 sipProfile?.let {
                     // Register to the SIP server
                     Log.v("ShovIP", "Starting SIP registration...")
-
                     // TODO: unfortunately, incomingCallPendingIntent cannot be skipped
-                    sipManager?.open(it, null, null)
+                    val intent = Intent("android.SipDemo.INCOMING_CALL")
+                    val pendingIntent: PendingIntent = PendingIntent.getBroadcast(this, 0, intent, Intent.FILL_IN_DATA)
+                    sipManager?.open(it, pendingIntent, null)
                 } ?: run {
                     Log.v("ShovIP", "Could not create SipProfile")
                 }

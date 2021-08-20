@@ -39,6 +39,8 @@ class SettingsFragment : Fragment() {
                 password.setText(textSaved)
                 textSaved = sharedPreferences.getString("DOMAIN", "")
                 domain.setText(textSaved)
+                textSaved = sharedPreferences.getString("PROXY", "")
+                proxy.setText(textSaved)
             }
         }
     }
@@ -59,6 +61,10 @@ class SettingsFragment : Fragment() {
             insertedText = domain.text.toString()
             editor.apply{
                 putString("DOMAIN",insertedText)
+            }.apply()
+            insertedText = proxy.text.toString()
+            editor.apply{
+                putString("PROXY",insertedText)
             }.apply()
             Toast.makeText(act,"Data Saved",Toast.LENGTH_SHORT).show()
 

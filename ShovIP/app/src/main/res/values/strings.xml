@@ -24,4 +24,5 @@
     <string name="contactpad">ContactPad</string>
     <string name="defaultpic">defaultPic</string>
     <string name="no_account">No Account</string>
+    <string name="outbound_proxy">Outbound Proxy</string>
 </resources>
