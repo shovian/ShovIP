@@ -47,12 +47,15 @@ class VoiceCallFragment : Fragment() {
             override fun onCalling() {
                 Log.v("ShovIP", "MyCallListener.onCalling()")
                 // TODO: Update the GUI to display the CALL STATE (e.g. dialing, or connected)
+                binding.tvStatus.text = "Dialing"
                 // TODO: Update the GUI to display the partner's number (hint: get the information from the call object)
+                binding.tvCalleeName.text = mainActivity.num
             }
 
             override fun onCallEstablished() {
                 Log.v("ShovIP", "MyCallListener.onCallEstablished()")
                 // TODO: Update the GUI
+                binding.tvStatus.text = "Connected"
             }
 
             override fun onCallEnded() {

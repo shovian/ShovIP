@@ -26,6 +26,7 @@ import com.example.shovip.databinding.ActivityMainBinding
 import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
+    public var num : String =""
     public interface MyCallListener {
         fun onCalling() {}
         fun onCallEstablished() {}
@@ -68,6 +69,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun dial(number: String): Boolean {
+        num=number
         if( !number.isNullOrEmpty() ){
             Log.v("ShovIP", "Dialing $number...")
 
