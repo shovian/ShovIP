@@ -1,6 +1,8 @@
 package com.example.shovip
 
+import android.net.sip.SipAudioCall
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -30,13 +32,35 @@ class VoiceCallFragment : Fragment() {
             findNavController().navigate(R.id.action_VoiceCallFragment_to_VideoCallFragment)
         }
         binding.bHangup.setOnClickListener {
-            // TODO: Actually hang up the call! You need access to the call object here!
-            mainActivity.call?.endCall()
+            mainActivity.call?.let {
+                Log.v("ShovIP", "Hanging up the call...")
+                it.endCall()
+            } ?: run {
+                Log.v("ShovIP", "There is no call to hang up.")
+            }
+
             findNavController().navigate(R.id.action_VoiceCallFragment_to_DialPadFragment)
         }
 
-        // TODO: 1. Create the SipAudioCall.Listener
-        //mainActivity.call?.setListener()
-        // TODO: 2. In onCallEnded() of the SipAudioCall.Listener, you should close this view and return to the dialpad
+        // Create the SipAudioCall.Listener
+        var myCallListener: MainActivity.MyCallListener = object : MainActivity.MyCallListener {
+            override fun onCalling() {
+                Log.v("ShovIP", "MyCallListener.onCalling()")
+                // TODO: Update the GUI to display the CALL STATE (e.g. dialing, or connected)
+                // TODO: Update the GUI to display the partner's number (hint: get the information from the call object)
+            }
+
+            override fun onCallEstablished() {
+                Log.v("ShovIP", "MyCallListener.onCallEstablished()")
+                // TODO: Update the GUI
+            }
+
+            override fun onCallEnded() {
+                Log.v("ShovIP", "MyCallListener.onCallEnded()")
+                // TODO: 2. In onCallEnded() of the SipAudioCall.Listener, you should close this view and return to the dialpad
+            }
+        }
+
+        mainActivity.myCallListener = myCallListener
     }
 }

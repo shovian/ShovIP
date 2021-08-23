@@ -2,6 +2,8 @@ package com.example.shovip
 
 import android.content.Context
 import android.graphics.Color
+import android.net.sip.SipAudioCall
+import android.net.sip.SipManager
 import android.net.sip.SipProfile
 import android.net.sip.SipRegistrationListener
 import android.os.Bundle
@@ -11,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.shovip.databinding.FragmentDialPadBinding
 import android.annotation.SuppressLint as SuppressLint1
@@ -48,9 +51,7 @@ class DialPadFragment : Fragment() {
             }
         }
     }
-    fun makeAudioCall(caller : SipProfile, callee : SipProfile){
 
-    }
     @SuppressLint1("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -58,24 +59,13 @@ class DialPadFragment : Fragment() {
         val mainActivity = activity as MainActivity
         with(binding){
             buttonFirst.setOnClickListener {
-                // TODO: 1. Retrieve the number from the input field
                 var num : String?
                 with(binding){num = number.text.toString()}
-                // TODO: 2. If the number is not empty, DIAL with makeAudioCall() function
+                val success = mainActivity.dial(num ?: "")
 
-                if(!num.isNullOrEmpty()){
-                    val sharedPreferences = activity?.let{ it.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)}
-                    val domain = sharedPreferences?.getString("DOMAIN", "")
-                    val proxy = sharedPreferences?.getString("PROXY", "")
-                    val builder = SipProfile.Builder(num,domain)
-                    if ( !proxy.isNullOrEmpty() ) {
-                        builder.setOutboundProxy(proxy)
-                    }
-                    var callee : SipProfile = builder.build()
-
-                    mainActivity.call = mainActivity.sipManager?.makeAudioCall(mainActivity.sipProfile,callee,null,0)
+                if ( success ) {
+                    findNavController().navigate(R.id.action_DialPadFragment_to_VoiceCallFragment)
                 }
-                findNavController().navigate(R.id.action_DialPadFragment_to_VoiceCallFragment)
             }
             b1.setOnClickListener{
                 number.setText(number.text.toString()+1.toString())

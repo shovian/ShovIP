@@ -20,11 +20,18 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
 import com.example.shovip.databinding.ActivityMainBinding
 import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
+    public interface MyCallListener {
+        fun onCalling() {}
+        fun onCallEstablished() {}
+        fun onCallEnded() {}
+    }
+
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     val sipManager: SipManager? by lazy(LazyThreadSafetyMode.NONE) {
@@ -33,6 +40,79 @@ class MainActivity : AppCompatActivity() {
     var sipProfile : SipProfile? = null
     // TODO: Add call object here
     var call : SipAudioCall? = null
+    var myCallListener : MyCallListener? = null
+
+    private var audioCallListener: SipAudioCall.Listener = object : SipAudioCall.Listener() {
+        override fun onCalling(call: SipAudioCall?) {
+            Log.v("ShovIP", "SipAudioCall.Listener.onCalling()")
+            myCallListener?.onCalling()
+            super.onCalling(call)
+        }
+
+        override fun onCallEstablished(call: SipAudioCall) {
+            Log.v("ShovIP", "SipAudioCall.Listener.onCallEstablished()")
+            call.apply {
+                Log.v("ShovIP", "starting audio...")
+                startAudio()
+                // setSpeakerMode(true)
+                // toggleMute()
+            }
+            myCallListener?.onCallEstablished()
+            super.onCallEstablished(call)
+        }
+
+        override fun onCallEnded(call: SipAudioCall) {
+            Log.v("ShovIP", "SipAudioCall.Listener.onCallEnded()")
+            myCallListener?.onCallEnded()
+        }
+    }
+
+    fun dial(number: String): Boolean {
+        if( !number.isNullOrEmpty() ){
+            Log.v("ShovIP", "Dialing $number...")
+
+            try {
+                val sharedPreferences = getSharedPreferences(
+                        "sharedPrefs",
+                        Context.MODE_PRIVATE
+                    )
+                val domain = sharedPreferences.getString("DOMAIN", "")
+                val proxy = sharedPreferences.getString("PROXY", "")
+                val builder = SipProfile.Builder(number, domain)
+                if (!proxy.isNullOrEmpty()) {
+                    builder.setOutboundProxy(proxy)
+                }
+                var callee = builder.build()
+
+                callee?.let {
+                    Log.v("ShovIP", "Created callee profile: ${callee.uriString}")
+                } ?: run {
+                    Log.v("ShovIP", "Could not create profile")
+                    return false
+                }
+
+                call = sipManager?.makeAudioCall(
+                    sipProfile,
+                    callee,
+                    audioCallListener,
+                    0
+                )
+
+                if ( call == null ) {
+                    Log.v("ShovIP", "Could not dial call.")
+                    return false
+                }
+
+                return true
+            } catch (ee: Exception) {
+                Log.d("ShovIP", "Failed to dial.", ee)
+            }
+
+            return false
+        }
+
+        return false
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +130,34 @@ class MainActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.USE_SIP), 0);
         } else {
             Log.v("ShovIP", "We already have USE_SIP permission.")
+        }
+
+        if ( ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED ){
+            Log.v("ShovIP", "We don't have RECORD_AUDIO permission, requesting it...")
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO), 0);
+        } else {
+            Log.v("ShovIP", "We already have RECORD_AUDIO permission.")
+        }
+
+        if ( ContextCompat.checkSelfPermission(this, Manifest.permission.MODIFY_AUDIO_SETTINGS) != PackageManager.PERMISSION_GRANTED ){
+            Log.v("ShovIP", "We don't have MODIFY_AUDIO_SETTINGS permission, requesting it...")
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.MODIFY_AUDIO_SETTINGS), 0);
+        } else {
+            Log.v("ShovIP", "We already have MODIFY_AUDIO_SETTINGS permission.")
+        }
+
+        if ( ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE) != PackageManager.PERMISSION_GRANTED ){
+            Log.v("ShovIP", "We don't have ACCESS_WIFI_STATE permission, requesting it...")
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_WIFI_STATE), 0);
+        } else {
+            Log.v("ShovIP", "We already have ACCESS_WIFI_STATE permission.")
+        }
+
+        if ( ContextCompat.checkSelfPermission(this, Manifest.permission.WAKE_LOCK) != PackageManager.PERMISSION_GRANTED ){
+            Log.v("ShovIP", "We don't have WAKE_LOCK permission, requesting it...")
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WAKE_LOCK), 0);
+        } else {
+            Log.v("ShovIP", "We already have WAKE_LOCK permission.")
         }
 
         if ( ContextCompat.checkSelfPermission(this, Manifest.permission.USE_SIP) != PackageManager.PERMISSION_GRANTED ){
