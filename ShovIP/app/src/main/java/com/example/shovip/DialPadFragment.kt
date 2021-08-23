@@ -55,14 +55,14 @@ class DialPadFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadData()
-
+        val mainActivity = activity as MainActivity
         with(binding){
             buttonFirst.setOnClickListener {
                 // TODO: 1. Retrieve the number from the input field
                 var num : String?
                 with(binding){num = number.text.toString()}
                 // TODO: 2. If the number is not empty, DIAL with makeAudioCall() function
-                (activity as MainActivity).sipManager.makeAudioCall()
+
                 if(!num.isNullOrEmpty()){
                     val sharedPreferences = activity?.let{ it.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)}
                     val domain = sharedPreferences?.getString("DOMAIN", "")
@@ -72,8 +72,9 @@ class DialPadFragment : Fragment() {
                         builder.setOutboundProxy(proxy)
                     }
                     var callee : SipProfile = builder.build()
+
+                    mainActivity.call = mainActivity.sipManager?.makeAudioCall(mainActivity.sipProfile,callee,null,0)
                 }
-                // TODO: 3. Store the call object returned from the makeAudioCall() function to the activity
                 findNavController().navigate(R.id.action_DialPadFragment_to_VoiceCallFragment)
             }
             b1.setOnClickListener{
@@ -109,7 +110,7 @@ class DialPadFragment : Fragment() {
             binding.indicatorLight.setColorFilter(Color.RED)
         }
 
-        val mainActivity = activity as MainActivity
+
         mainActivity.reloadSipProfile()
 
         mainActivity.sipProfile?.let{
