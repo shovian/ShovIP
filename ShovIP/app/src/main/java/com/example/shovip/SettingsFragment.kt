@@ -10,7 +10,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.shovip.databinding.FragmentSettingsBinding
 
-class SettingsFragment : Fragment() {
+class
+SettingsFragment : Fragment() {
     private var binding by autoCleared<FragmentSettingsBinding>()
 
     override fun onCreateView(

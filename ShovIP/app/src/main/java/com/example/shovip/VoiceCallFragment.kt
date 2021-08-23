@@ -33,7 +33,7 @@ class VoiceCallFragment : Fragment() {
         }
 
         // TODO: 1. Create the SipAudioCall.Listener
-
+        
         // TODO: 2. In onCallEnded() of the SipAudioCall.Listener, you should close this view and return to the dialpad
     }
 }

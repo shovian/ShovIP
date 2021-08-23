@@ -2,6 +2,7 @@ package com.example.shovip
 
 import android.content.Context
 import android.graphics.Color
+import android.net.sip.SipProfile
 import android.net.sip.SipRegistrationListener
 import android.os.Bundle
 import android.util.Log
@@ -47,7 +48,9 @@ class DialPadFragment : Fragment() {
             }
         }
     }
-    
+    fun makeAudioCall(caller : SipProfile, callee : SipProfile){
+
+    }
     @SuppressLint1("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,7 +59,20 @@ class DialPadFragment : Fragment() {
         with(binding){
             buttonFirst.setOnClickListener {
                 // TODO: 1. Retrieve the number from the input field
+                var num : String?
+                with(binding){num = number.text.toString()}
                 // TODO: 2. If the number is not empty, DIAL with makeAudioCall() function
+                (activity as MainActivity).sipManager.makeAudioCall()
+                if(!num.isNullOrEmpty()){
+                    val sharedPreferences = activity?.let{ it.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)}
+                    val domain = sharedPreferences?.getString("DOMAIN", "")
+                    val proxy = sharedPreferences?.getString("PROXY", "")
+                    val builder = SipProfile.Builder(num,domain)
+                    if ( !proxy.isNullOrEmpty() ) {
+                        builder.setOutboundProxy(proxy)
+                    }
+                    var callee : SipProfile = builder.build()
+                }
                 // TODO: 3. Store the call object returned from the makeAudioCall() function to the activity
                 findNavController().navigate(R.id.action_DialPadFragment_to_VoiceCallFragment)
             }

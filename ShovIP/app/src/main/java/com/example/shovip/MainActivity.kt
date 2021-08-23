@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.sip.SipAudioCall
 import android.net.sip.SipManager
 import android.net.sip.SipProfile
 import android.os.Bundle
@@ -31,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     }
     var sipProfile : SipProfile? = null
     // TODO: Add call object here
+    var call : SipAudioCall? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
