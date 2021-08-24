@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     public interface MyCallListener {
         fun onCalling() {}
         fun onCallEstablished() {}
-        fun onCallEnded() {}
+        fun onCallEnded(call: SipAudioCall) {}
     }
 
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
 
         override fun onCallEnded(call: SipAudioCall) {
             Log.v("ShovIP", "SipAudioCall.Listener.onCallEnded()")
-            myCallListener?.onCallEnded()
+            myCallListener?.onCallEnded(call)
         }
     }
 

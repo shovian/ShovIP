@@ -1,5 +1,6 @@
 package com.example.shovip
 
+import android.content.Context
 import android.net.sip.SipAudioCall
 import android.os.Bundle
 import android.util.Log
@@ -37,33 +38,59 @@ class VoiceCallFragment : Fragment() {
                 it.endCall()
             } ?: run {
                 Log.v("ShovIP", "There is no call to hang up.")
+                findNavController().navigate(R.id.action_VoiceCallFragment_to_DialPadFragment)
             }
-
-            findNavController().navigate(R.id.action_VoiceCallFragment_to_DialPadFragment)
         }
 
         // Create the SipAudioCall.Listener
         var myCallListener: MainActivity.MyCallListener = object : MainActivity.MyCallListener {
             override fun onCalling() {
                 Log.v("ShovIP", "MyCallListener.onCalling()")
-                // TODO: Update the GUI to display the CALL STATE (e.g. dialing, or connected)
-                binding.tvStatus.text = "Dialing"
-                // TODO: Update the GUI to display the partner's number (hint: get the information from the call object)
-                binding.tvCalleeName.text = mainActivity.num
+
+                activity?.runOnUiThread {
+                    try {
+                        binding.tvStatus.text = "Dialing"
+                    } catch (ee: Exception) {
+                    }
+                }
             }
 
             override fun onCallEstablished() {
                 Log.v("ShovIP", "MyCallListener.onCallEstablished()")
-                // TODO: Update the GUI
-                binding.tvStatus.text = "Connected"
+
+                activity?.runOnUiThread {
+                    try {
+                        binding.tvStatus.text = "Connected"
+                    } catch (ee: Exception) {
+                    }
+                }
             }
 
-            override fun onCallEnded() {
+            override fun onCallEnded(call: SipAudioCall) {
                 Log.v("ShovIP", "MyCallListener.onCallEnded()")
-                // TODO: 2. In onCallEnded() of the SipAudioCall.Listener, you should close this view and return to the dialpad
+
+                call.close()
+                call.setListener(null)  // remove ourselves as listener so there are no dangling references
+                mainActivity.call = null
+
+                activity?.runOnUiThread {
+                    try {
+                        binding.tvStatus.text = "Ended"
+                        findNavController().navigate(R.id.action_VoiceCallFragment_to_DialPadFragment)
+                    } catch (ee: Exception) {
+                    }
+                }
             }
         }
 
         mainActivity.myCallListener = myCallListener
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (activity as MainActivity).call?.let {
+            Log.v("ShovIP", "Hanging up the call...")
+            it.endCall()
+        }
     }
 }
