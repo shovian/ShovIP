@@ -46,7 +46,12 @@ class MainActivity : AppCompatActivity() {
     private var audioCallListener: SipAudioCall.Listener = object : SipAudioCall.Listener() {
         override fun onCalling(call: SipAudioCall?) {
             Log.v("ShovIP", "SipAudioCall.Listener.onCalling()")
-            myCallListener?.onCalling()
+            myCallListener?.let {
+                it.onCalling()
+            } ?: run {
+                Log.v("ShovIP", "myCallListener is null!")
+            }
+
             super.onCalling(call)
         }
 
