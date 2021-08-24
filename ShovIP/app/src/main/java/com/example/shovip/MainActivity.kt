@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     public interface MyCallListener {
         fun onCalling() {}
         fun onCallEstablished() {}
-        fun onCallEnded() {}
+        fun onCallEnded(call: SipAudioCall) {}
     }
 
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -46,7 +46,12 @@ class MainActivity : AppCompatActivity() {
     private var audioCallListener: SipAudioCall.Listener = object : SipAudioCall.Listener() {
         override fun onCalling(call: SipAudioCall?) {
             Log.v("ShovIP", "SipAudioCall.Listener.onCalling()")
-            myCallListener?.onCalling()
+            myCallListener?.let {
+                it.onCalling()
+            } ?: run {
+                Log.v("ShovIP", "myCallListener is null!")
+            }
+
             super.onCalling(call)
         }
 
@@ -55,8 +60,6 @@ class MainActivity : AppCompatActivity() {
             call.apply {
                 Log.v("ShovIP", "starting audio...")
                 startAudio()
-                // setSpeakerMode(true)
-                // toggleMute()
             }
             myCallListener?.onCallEstablished()
             super.onCallEstablished(call)
@@ -64,7 +67,7 @@ class MainActivity : AppCompatActivity() {
 
         override fun onCallEnded(call: SipAudioCall) {
             Log.v("ShovIP", "SipAudioCall.Listener.onCallEnded()")
-            myCallListener?.onCallEnded()
+            myCallListener?.onCallEnded(call)
         }
     }
 

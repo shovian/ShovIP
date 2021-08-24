@@ -1,6 +1,8 @@
 package com.example.shovip
 
+import android.content.Context
 import android.net.sip.SipAudioCall
+import android.net.sip.SipSession
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -28,42 +30,87 @@ class VoiceCallFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val mainActivity = activity as MainActivity
 
+        // TODO: Remove the VideoFragment
         binding.bSwitch.setOnClickListener {
             findNavController().navigate(R.id.action_VoiceCallFragment_to_VideoCallFragment)
         }
+
         binding.bHangup.setOnClickListener {
             mainActivity.call?.let {
                 Log.v("ShovIP", "Hanging up the call...")
                 it.endCall()
             } ?: run {
                 Log.v("ShovIP", "There is no call to hang up.")
+                findNavController().navigate(R.id.action_VoiceCallFragment_to_DialPadFragment)
             }
-
-            findNavController().navigate(R.id.action_VoiceCallFragment_to_DialPadFragment)
         }
 
         // Create the SipAudioCall.Listener
         var myCallListener: MainActivity.MyCallListener = object : MainActivity.MyCallListener {
             override fun onCalling() {
                 Log.v("ShovIP", "MyCallListener.onCalling()")
-                // TODO: Update the GUI to display the CALL STATE (e.g. dialing, or connected)
-                binding.tvStatus.text = "Dialing"
-                // TODO: Update the GUI to display the partner's number (hint: get the information from the call object)
-                binding.tvCalleeName.text = mainActivity.num
+
+                activity?.runOnUiThread {
+                    updateCallState()
+                }
             }
 
             override fun onCallEstablished() {
                 Log.v("ShovIP", "MyCallListener.onCallEstablished()")
-                // TODO: Update the GUI
-                binding.tvStatus.text = "Connected"
+
+                activity?.runOnUiThread {
+                    updateCallState()
+                }
             }
 
-            override fun onCallEnded() {
+            override fun onCallEnded(call: SipAudioCall) {
                 Log.v("ShovIP", "MyCallListener.onCallEnded()")
-                // TODO: 2. In onCallEnded() of the SipAudioCall.Listener, you should close this view and return to the dialpad
+
+                call.close()
+                call.setListener(null)  // remove ourselves as listener so there are no dangling references
+                mainActivity.call = null
+                mainActivity.myCallListener = null
+
+                activity?.runOnUiThread {
+                    updateCallState()
+                    findNavController().navigate(R.id.action_VoiceCallFragment_to_DialPadFragment)
+                }
             }
         }
 
         mainActivity.myCallListener = myCallListener
+        updateCallState()
+    }
+
+    private fun updateCallState() {
+        try {
+            val mainActivity = activity as MainActivity
+            var stateText = "Idle"
+
+            mainActivity.call?.let {
+                stateText = when (it.state) {
+                    SipSession.State.INCOMING_CALL, SipSession.State.INCOMING_CALL_ANSWERING -> "Ringing"
+                    SipSession.State.OUTGOING_CALL, SipSession.State.OUTGOING_CALL_RING_BACK -> "Dialing"
+                    SipSession.State.IN_CALL -> "Connected"
+                    SipSession.State.OUTGOING_CALL_CANCELING -> "Cancelling"
+                    SipSession.State.READY_TO_CALL, SipSession.State.DEREGISTERING, SipSession.State.REGISTERING -> "Idle"
+                    else -> "Unknown state"
+                }
+            } ?: run {
+                stateText = "Idle"
+            }
+
+            Log.v("ShovIP", "stateText = $stateText")
+            binding.tvStatus.text = stateText
+        } catch (ee: Exception) {
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (activity as MainActivity).call?.let {
+            Log.v("ShovIP", "Hanging up the call...")
+            it.endCall()
+        }
     }
 }
