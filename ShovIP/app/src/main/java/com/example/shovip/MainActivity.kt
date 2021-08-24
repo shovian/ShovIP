@@ -60,8 +60,6 @@ class MainActivity : AppCompatActivity() {
             call.apply {
                 Log.v("ShovIP", "starting audio...")
                 startAudio()
-                // setSpeakerMode(true)
-                // toggleMute()
             }
             myCallListener?.onCallEstablished()
             super.onCallEstablished(call)
