@@ -30,11 +30,6 @@ class VoiceCallFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val mainActivity = activity as MainActivity
 
-        // TODO: Remove the VideoFragment
-        binding.bSwitch.setOnClickListener {
-            findNavController().navigate(R.id.action_VoiceCallFragment_to_VideoCallFragment)
-        }
-
         binding.bHangup.setOnClickListener {
             mainActivity.call?.let {
                 Log.v("ShovIP", "Hanging up the call...")

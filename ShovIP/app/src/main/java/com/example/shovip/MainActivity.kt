@@ -22,10 +22,11 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
 import com.example.shovip.databinding.ActivityMainBinding
-class IncomingCallReceiver : BroadcastReceiver() {
 
+class IncomingCallReceiver : BroadcastReceiver() {
     /**
      * Processes the incoming call, answers it, and hands it over to the
      * WalkieTalkieActivity.
@@ -33,38 +34,24 @@ class IncomingCallReceiver : BroadcastReceiver() {
      * @param intent The intent being received.
      */
     override fun onReceive(context: Context, intent: Intent) {
-        val wtActivity = context as MainActivity
+        val mainActivity = context as MainActivity
+        Log.v("ShovIP","IncomingCallReceiver.onReceive()")
 
         var incomingCall: SipAudioCall? = null
         try {
-            incomingCall = wtActivity.sipManager?.takeAudioCall(intent, listener)
+            incomingCall = mainActivity.sipManager?.takeAudioCall(intent, mainActivity.audioCallListener)
             incomingCall?.apply {
+                Log.v("ShovIP","Answering call...")
                 answerCall(30)
-                startAudio()
-                setSpeakerMode(true)
-                //if (isMuted) {
-                //    toggleMute()
-                //}
-                wtActivity.call = this
-                //wtActivity.updateStatus(this)
+                mainActivity.call = this
+                mainActivity.navigateToVoiceCallFragment()
             }
         } catch (e: Exception) {
             incomingCall?.close()
         }
     }
-
-    private val listener = object : SipAudioCall.Listener() {
-
-        override fun onRinging(call: SipAudioCall, caller: SipProfile) {
-            Log.v("ShovIP","the Phone is Ringing")
-            try {
-                call.answerCall(30)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
 }
+
 class MainActivity : AppCompatActivity() {
     public var num : String = ""
     lateinit var callReceiver: IncomingCallReceiver
@@ -83,7 +70,7 @@ class MainActivity : AppCompatActivity() {
     var call : SipAudioCall? = null
     var myCallListener : MyCallListener? = null
 
-    private var audioCallListener: SipAudioCall.Listener = object : SipAudioCall.Listener() {
+    var audioCallListener: SipAudioCall.Listener = object : SipAudioCall.Listener() {
         override fun onCalling(call: SipAudioCall?) {
             Log.v("ShovIP", "SipAudioCall.Listener.onCalling()")
             myCallListener?.let {
@@ -109,6 +96,11 @@ class MainActivity : AppCompatActivity() {
             Log.v("ShovIP", "SipAudioCall.Listener.onCallEnded()")
             myCallListener?.onCallEnded(call)
         }
+    }
+
+    fun navigateToVoiceCallFragment() {
+        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        navController.navigate(R.id.action_DialPadFragment_to_VoiceCallFragment)
     }
 
     fun dial(number: String): Boolean {
