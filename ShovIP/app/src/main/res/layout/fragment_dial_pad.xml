@@ -120,7 +120,8 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/b0"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
@@ -138,7 +139,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/number"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            tools:ignore="SpeakableTextPresentCheck" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -162,5 +164,7 @@
         android:src="@drawable/_200px_font_awesome_5_solid_circle_svg"
         app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:tint="@android:color/holo_green_light" />
+        app:tint="@android:color/holo_green_light"
+        tools:ignore="ImageContrastCheck"
+        tools:targetApi="ice_cream_sandwich" />
 </androidx.constraintlayout.widget.ConstraintLayout>

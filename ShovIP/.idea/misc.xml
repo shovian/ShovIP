@@ -3,8 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/hidey/Documents/Project/ShovIP/app/src/main/res/layout-v14/fragment_dial_pad.xml" value="0.67" />
         <entry key="..\:/Users/hidey/Documents/Project/ShovIP/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Users/hidey/Documents/Project/ShovIP/app/src/main/res/layout/fragment_voice_call.xml" value="0.67" />
+        <entry key="..\:/Users/hidey/Documents/Project/ShovIP/app/src/main/res/layout/fragment_dial_pad.xml" value="0.1" />
+        <entry key="..\:/Users/hidey/Documents/Project/ShovIP/app/src/main/res/layout/fragment_voice_call.xml" value="0.1" />
       </map>
     </option>
   </component>

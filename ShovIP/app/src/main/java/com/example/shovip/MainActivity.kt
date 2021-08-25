@@ -2,8 +2,10 @@ package com.example.shovip
 
 import android.Manifest
 import android.app.PendingIntent
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.net.sip.SipAudioCall
 import android.net.sip.SipManager
@@ -20,13 +22,52 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
 import com.example.shovip.databinding.ActivityMainBinding
-import kotlin.system.exitProcess
+class IncomingCallReceiver : BroadcastReceiver() {
 
+    /**
+     * Processes the incoming call, answers it, and hands it over to the
+     * WalkieTalkieActivity.
+     * @param context The context under which the receiver is running.
+     * @param intent The intent being received.
+     */
+    override fun onReceive(context: Context, intent: Intent) {
+        val wtActivity = context as MainActivity
+
+        var incomingCall: SipAudioCall? = null
+        try {
+            incomingCall = wtActivity.sipManager?.takeAudioCall(intent, listener)
+            incomingCall?.apply {
+                answerCall(30)
+                startAudio()
+                setSpeakerMode(true)
+                //if (isMuted) {
+                //    toggleMute()
+                //}
+                wtActivity.call = this
+                //wtActivity.updateStatus(this)
+            }
+        } catch (e: Exception) {
+            incomingCall?.close()
+        }
+    }
+
+    private val listener = object : SipAudioCall.Listener() {
+
+        override fun onRinging(call: SipAudioCall, caller: SipProfile) {
+            Log.v("ShovIP","the Phone is Ringing")
+            try {
+                call.answerCall(30)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+}
 class MainActivity : AppCompatActivity() {
-    public var num : String =""
+    public var num : String = ""
+    lateinit var callReceiver: IncomingCallReceiver
     public interface MyCallListener {
         fun onCalling() {}
         fun onCallEstablished() {}
@@ -39,7 +80,6 @@ class MainActivity : AppCompatActivity() {
         SipManager.newInstance(this)
     }
     var sipProfile : SipProfile? = null
-    // TODO: Add call object here
     var call : SipAudioCall? = null
     var myCallListener : MyCallListener? = null
 
@@ -121,6 +161,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val filter = IntentFilter().apply {
+            addAction("com.example.shovip.INCOMING_CALL")
+        } 
+        callReceiver = IncomingCallReceiver()
+        this.registerReceiver(callReceiver, filter)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
@@ -132,35 +177,35 @@ class MainActivity : AppCompatActivity() {
     private fun requestPermission() {
         if ( ContextCompat.checkSelfPermission(this, Manifest.permission.USE_SIP) != PackageManager.PERMISSION_GRANTED ){
             Log.v("ShovIP", "We don't have USE_SIP permission, requesting it...")
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.USE_SIP), 0);
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.USE_SIP), 0)
         } else {
             Log.v("ShovIP", "We already have USE_SIP permission.")
         }
 
         if ( ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED ){
             Log.v("ShovIP", "We don't have RECORD_AUDIO permission, requesting it...")
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO), 0);
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO), 0)
         } else {
             Log.v("ShovIP", "We already have RECORD_AUDIO permission.")
         }
 
         if ( ContextCompat.checkSelfPermission(this, Manifest.permission.MODIFY_AUDIO_SETTINGS) != PackageManager.PERMISSION_GRANTED ){
             Log.v("ShovIP", "We don't have MODIFY_AUDIO_SETTINGS permission, requesting it...")
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.MODIFY_AUDIO_SETTINGS), 0);
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.MODIFY_AUDIO_SETTINGS), 0)
         } else {
             Log.v("ShovIP", "We already have MODIFY_AUDIO_SETTINGS permission.")
         }
 
         if ( ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE) != PackageManager.PERMISSION_GRANTED ){
             Log.v("ShovIP", "We don't have ACCESS_WIFI_STATE permission, requesting it...")
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_WIFI_STATE), 0);
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_WIFI_STATE), 0)
         } else {
             Log.v("ShovIP", "We already have ACCESS_WIFI_STATE permission.")
         }
 
         if ( ContextCompat.checkSelfPermission(this, Manifest.permission.WAKE_LOCK) != PackageManager.PERMISSION_GRANTED ){
             Log.v("ShovIP", "We don't have WAKE_LOCK permission, requesting it...")
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WAKE_LOCK), 0);
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WAKE_LOCK), 0)
         } else {
             Log.v("ShovIP", "We already have WAKE_LOCK permission.")
         }
@@ -211,7 +256,7 @@ class MainActivity : AppCompatActivity() {
                     Log.v("ShovIP", "Starting SIP registration...")
 
                     // TODO: This intent is from an Android demo project and will not work
-                    val intent = Intent("android.SipDemo.INCOMING_CALL")
+                    val intent = Intent("com.example.shovip.INCOMING_CALL")
                     val pendingIntent: PendingIntent = PendingIntent.getBroadcast(this, 0, intent, Intent.FILL_IN_DATA)
                     sipManager?.open(it, pendingIntent, null)
                 } ?: run {

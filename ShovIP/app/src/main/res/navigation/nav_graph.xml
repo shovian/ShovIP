@@ -24,9 +24,6 @@
         <action
             android:id="@+id/action_VoiceCallFragment_to_DialPadFragment"
             app:destination="@id/DialPadFragment" />
-        <action
-            android:id="@+id/action_VoiceCallFragment_to_VideoCallFragment"
-            app:destination="@id/VideoCallFragment" />
     </fragment>
     <fragment
         android:id="@+id/SettingsFragment"
@@ -36,18 +33,6 @@
         <action
             android:id="@+id/action_SettingsFragment_to_DialPadFragment"
             app:destination="@id/DialPadFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/VideoCallFragment"
-        android:name="com.example.shovip.VideoCallFragment"
-        android:label="@string/videoCall_fragment_label"
-        tools:layout="@layout/fragment_video_call">
-        <action
-            android:id="@+id/action_VideoCallFragment_to_DialPadFragment"
-            app:destination="@id/DialPadFragment" />
-        <action
-            android:id="@+id/action_VideoCallFragment_to_VoiceCallFragment"
-            app:destination="@id/VoiceCallFragment" />
     </fragment>
 
 </navigation>
