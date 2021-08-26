@@ -30,6 +30,10 @@ class VoiceCallFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val mainActivity = activity as MainActivity
 
+        binding.bSwitch.setOnClickListener {
+            // TODO: answer the call here.
+        }
+
         binding.bHangup.setOnClickListener {
             mainActivity.call?.let {
                 Log.v("ShovIP", "Hanging up the call...")
@@ -91,6 +95,8 @@ class VoiceCallFragment : Fragment() {
                     SipSession.State.READY_TO_CALL, SipSession.State.DEREGISTERING, SipSession.State.REGISTERING -> "Idle"
                     else -> "Unknown state"
                 }
+
+                // TODO: stop the ringtone here if we are not in INCOMING_CALL state
             } ?: run {
                 stateText = "Idle"
             }

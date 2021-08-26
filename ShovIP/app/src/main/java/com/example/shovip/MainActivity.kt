@@ -26,32 +26,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
 import com.example.shovip.databinding.ActivityMainBinding
 
-class IncomingCallReceiver : BroadcastReceiver() {
-    /**
-     * Processes the incoming call, answers it, and hands it over to the
-     * WalkieTalkieActivity.
-     * @param context The context under which the receiver is running.
-     * @param intent The intent being received.
-     */
-    override fun onReceive(context: Context, intent: Intent) {
-        val mainActivity = context as MainActivity
-        Log.v("ShovIP","IncomingCallReceiver.onReceive()")
-
-        var incomingCall: SipAudioCall? = null
-        try {
-            incomingCall = mainActivity.sipManager?.takeAudioCall(intent, mainActivity.audioCallListener)
-            incomingCall?.apply {
-                Log.v("ShovIP","Answering call...")
-                answerCall(30)
-                mainActivity.call = this
-                mainActivity.navigateToVoiceCallFragment()
-            }
-        } catch (e: Exception) {
-            incomingCall?.close()
-        }
-    }
-}
-
 class MainActivity : AppCompatActivity() {
     public var num : String = ""
     lateinit var callReceiver: IncomingCallReceiver
@@ -153,11 +127,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
         val filter = IntentFilter().apply {
             addAction("com.example.shovip.INCOMING_CALL")
         } 
         callReceiver = IncomingCallReceiver()
         this.registerReceiver(callReceiver, filter)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
@@ -246,8 +222,6 @@ class MainActivity : AppCompatActivity() {
                 sipProfile?.let {
                     // Register to the SIP server
                     Log.v("ShovIP", "Starting SIP registration...")
-
-                    // TODO: This intent is from an Android demo project and will not work
                     val intent = Intent("com.example.shovip.INCOMING_CALL")
                     val pendingIntent: PendingIntent = PendingIntent.getBroadcast(this, 0, intent, Intent.FILL_IN_DATA)
                     sipManager?.open(it, pendingIntent, null)
